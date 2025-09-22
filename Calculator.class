@@ -1,0 +1,287 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package cal;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Calculator extends JFrame implements ActionListener {
+   private JButton delBtn;
+   private JButton clearBtn;
+   private JButton[] NumberBtn;
+   private JButton[] functionBtn;
+   private JButton Add_btn;
+   private JButton Sub_btn;
+   private JButton Mul_btn;
+   private JButton Div_btn;
+   private JButton equalBtn;
+   private JButton decBtn;
+   private JPanel panel;
+   private JTextField text;
+   private double number;
+   private double result = 0.0;
+   private double current;
+   private double temp = 0.0;
+   private char operator = ' ';
+   private int x = 0;
+
+   public Calculator() {
+      this.initialize();
+   }
+
+   private void initialize() {
+      this.setSize(new Dimension(300, 420));
+      this.setLayout((LayoutManager)null);
+      this.setDefaultCloseOperation(3);
+      this.setResizable(false);
+      this.text = new JTextField();
+      this.text.setSize(new Dimension(250, 40));
+      this.text.setLocation(new Point(20, 20));
+      this.text.setFont(new Font("Orbitron", 0, 20));
+      this.text.setEditable(false);
+      this.text.setForeground(Color.black);
+      this.text.setHorizontalAlignment(4);
+      this.panel = new JPanel();
+      this.panel.setLayout(new GridLayout(4, 4));
+      this.panel.setSize(new Dimension(250, 250));
+      this.panel.setLocation(new Point(20, 70));
+      this.Add_btn = new JButton("+");
+      this.Sub_btn = new JButton("-");
+      this.Mul_btn = new JButton("*");
+      this.Div_btn = new JButton("/");
+      this.equalBtn = new JButton("=");
+      this.decBtn = new JButton(".");
+      this.clearBtn = new JButton("CE");
+      this.clearBtn.setLocation(new Point(20, 330));
+      this.delBtn = new JButton("CLR");
+      this.delBtn.setLocation(new Point(170, 330));
+      this.functionBtn = new JButton[8];
+      this.functionBtn[0] = this.Add_btn;
+      this.functionBtn[1] = this.Sub_btn;
+      this.functionBtn[2] = this.Mul_btn;
+      this.functionBtn[3] = this.Div_btn;
+      this.functionBtn[4] = this.equalBtn;
+      this.functionBtn[5] = this.delBtn;
+      this.functionBtn[6] = this.clearBtn;
+      this.functionBtn[7] = this.decBtn;
+
+      int var1;
+      for(var1 = 0; var1 < 8; ++var1) {
+         this.functionBtn[var1].setFocusable(false);
+         this.functionBtn[var1].setVerticalTextPosition(0);
+         this.functionBtn[var1].setHorizontalTextPosition(0);
+         this.functionBtn[var1].setFont(new Font("Orbitron", 0, 20));
+         this.functionBtn[var1].setSize(new Dimension(100, 30));
+         this.functionBtn[var1].addActionListener(this);
+         this.functionBtn[var1].setForeground(Color.black);
+      }
+
+      this.NumberBtn = new JButton[10];
+
+      for(var1 = 0; var1 < 10; ++var1) {
+         this.NumberBtn[var1] = new JButton(String.valueOf(var1));
+         this.NumberBtn[var1].setFocusable(false);
+         this.NumberBtn[var1].setFont(new Font("Orbitron", 0, 20));
+         this.NumberBtn[var1].setSize(new Dimension(10, 10));
+         this.NumberBtn[var1].setVerticalTextPosition(0);
+         this.NumberBtn[var1].setHorizontalTextPosition(0);
+         this.NumberBtn[var1].addActionListener(this);
+         this.NumberBtn[var1].setForeground(Color.black);
+      }
+
+      this.panel.add(this.NumberBtn[7]);
+      this.panel.add(this.NumberBtn[8]);
+      this.panel.add(this.NumberBtn[9]);
+      this.panel.add(this.functionBtn[0]);
+      this.panel.add(this.NumberBtn[6]);
+      this.panel.add(this.NumberBtn[5]);
+      this.panel.add(this.NumberBtn[4]);
+      this.panel.add(this.functionBtn[1]);
+      this.panel.add(this.NumberBtn[3]);
+      this.panel.add(this.NumberBtn[2]);
+      this.panel.add(this.NumberBtn[1]);
+      this.panel.add(this.functionBtn[2]);
+      this.panel.add(this.functionBtn[7]);
+      this.panel.add(this.NumberBtn[0]);
+      this.panel.add(this.functionBtn[4]);
+      this.panel.add(this.functionBtn[3]);
+      this.add(this.functionBtn[6]);
+      this.add(this.functionBtn[5]);
+      this.add(this.text);
+      this.add(this.panel);
+      this.setVisible(true);
+      this.setLocationRelativeTo((Component)null);
+   }
+
+   private void operation(char var1, double var2) {
+      switch (this.operator) {
+         case '*':
+            this.result = this.number * var2;
+            break;
+         case '+':
+            this.result = this.number + var2;
+         case ',':
+         case '.':
+         default:
+            break;
+         case '-':
+            this.result = this.number - var2;
+            break;
+         case '/':
+            this.result = this.number / var2;
+      }
+
+      this.text.setText(String.valueOf(this.result));
+      this.temp = this.result;
+      this.x = 0;
+   }
+
+   public void actionPerformed(ActionEvent var1) {
+      if (var1.getSource() == this.functionBtn[0] && !this.text.getText().isEmpty()) {
+         this.current = Double.valueOf(this.text.getText());
+         if (this.operator != ' ' && this.operator != '+') {
+            this.operation(this.operator, this.current);
+            this.operator = ' ';
+         }
+
+         this.current = Double.valueOf(this.text.getText());
+         if (this.x == 0) {
+            this.temp = this.current;
+            this.number = this.temp;
+            this.operator = '+';
+            this.x = 1;
+         } else {
+            this.number = this.temp;
+            this.result = this.number + this.current;
+            this.text.setText(String.valueOf(this.result));
+            this.temp = this.result;
+            this.x = 1;
+         }
+      }
+
+      if (var1.getSource() == this.functionBtn[1] && !this.text.getText().isEmpty()) {
+         this.current = Double.valueOf(this.text.getText());
+         if (this.operator != ' ' && this.operator != '-') {
+            this.operation(this.operator, this.current);
+            this.operator = ' ';
+         }
+
+         this.current = Double.valueOf(this.text.getText());
+         if (this.x == 0) {
+            this.temp = this.current;
+            this.number = this.temp;
+            this.operator = '-';
+            this.x = 1;
+         } else {
+            this.number = this.temp;
+            this.result = this.number - this.current;
+            this.text.setText(String.valueOf(this.result));
+            this.temp = this.result;
+            this.x = 1;
+         }
+      }
+
+      if (var1.getSource() == this.functionBtn[2] && !this.text.getText().isEmpty()) {
+         this.current = Double.valueOf(this.text.getText());
+         if (this.operator != ' ' && this.operator != '*') {
+            this.operation(this.operator, this.current);
+            this.operator = ' ';
+         }
+
+         this.current = Double.valueOf(this.text.getText());
+         if (this.x == 0) {
+            this.temp = this.current;
+            this.number = this.temp;
+            this.operator = '*';
+            this.x = 1;
+         } else {
+            this.number = this.temp;
+            this.result = this.number * this.current;
+            this.text.setText(String.valueOf(this.result));
+            this.temp = this.result;
+            this.x = 1;
+         }
+      }
+
+      if (var1.getSource() == this.functionBtn[3] && !this.text.getText().isEmpty()) {
+         this.current = Double.valueOf(this.text.getText());
+         if (this.operator != ' ' && this.operator != '/') {
+            this.operation(this.operator, this.current);
+            this.operator = ' ';
+         }
+
+         this.current = Double.valueOf(this.text.getText());
+         if (this.x == 0) {
+            this.temp = this.current;
+            this.number = this.temp;
+            this.operator = '/';
+            this.x = 1;
+         } else {
+            this.number = this.temp;
+            this.result = this.number / this.current;
+            this.text.setText(String.valueOf(this.result));
+            this.temp = this.result;
+            this.x = 1;
+         }
+      }
+
+      if (var1.getSource() == this.functionBtn[4] && !this.text.getText().isEmpty()) {
+         this.current = Double.valueOf(this.text.getText());
+         this.operation(this.operator, this.current);
+         this.operator = ' ';
+      }
+
+      if (var1.getSource() == this.functionBtn[5]) {
+         this.text.setText("");
+      }
+
+      if (var1.getSource() == this.functionBtn[6]) {
+         this.result = 0.0;
+         this.x = 0;
+         this.temp = 0.0;
+         this.number = 0.0;
+         this.operator = ' ';
+         this.text.setText("");
+      }
+
+      if (var1.getSource() == this.functionBtn[7]) {
+         if (this.x == 1) {
+            this.text.setText("");
+            if (!this.text.getText().contains(".")) {
+               this.text.setText(this.text.getText().concat("."));
+            }
+
+            this.x = 0;
+         } else if (!this.text.getText().contains(".")) {
+            this.text.setText(this.text.getText().concat("."));
+         }
+      }
+
+      for(int var2 = 0; var2 < 10; ++var2) {
+         if (var1.getSource() == this.NumberBtn[var2]) {
+            if (this.x == 1) {
+               this.text.setText("");
+               this.text.setText(this.text.getText().concat(String.valueOf(var2)));
+               this.x = 2;
+            } else {
+               this.text.setText(this.text.getText().concat(String.valueOf(var2)));
+            }
+         }
+      }
+
+   }
+
+   public static void main(String[] var0) {
+      new Calculator();
+   }
+}
